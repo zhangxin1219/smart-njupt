@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.njupt.common.dao.StudentDao">
+    <resultMap type="Student" id="studentResultMap">
+        <id property="stuId" column="stu_id"/>
+        <result property="stuName" column="stu_name"/>
+        <result property="password" column="stu_password"/>
+        <result property="classId" column="class_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <select id="listStudents" resultMap="studentResultMap">
+        select t_student.stu_id,
+               t_student.stu_name,
+               t_student.stu_password,
+               t_student.class_id,
+               t_student.create_time,
+               t_student.update_time
+        from t_student
+    </select>
+    <select id="getStudentByStuId" resultMap="studentResultMap" parameterType="Integer">
+        select t_student.stu_id,
+               t_student.stu_name,
+               t_student.class_id,
+               t_student.stu_password,
+               t_student.create_time,
+               t_student.update_time
+        from t_student
+        where t_student.stu_id = #{stuId}
+    </select>
+    <select id="getStudentByStuIdAndPwd" resultMap="studentResultMap">
+        select t_student.stu_id, t_student.stu_password
+        from t_student
+        where t_student.stu_id = #{stuId}
+          and t_student.stu_password = #{password}
+    </select>
+    <select id="countStudentByStuId" resultType="int" parameterType="Integer">
+        select count(*)
+        from t_student
+        where stu_id = #{stuId}
+    </select>
+    <delete id="deleteStudentByStuId" parameterType="Integer">
+        delete
+        from t_student
+        where stu_id = #{stuId}
+    </delete>
+    <update id="updateStudent" parameterType="Student">
+        update t_student
+        <set>
+            <if test="classId != null and classId != ''">
+                class_id = #{classId},
+            </if>
+            <if test="stuName != null and stuName != ''">
+                stu_name = #{stuName},
+            </if>
+            <if test="password != null and password != ''">
+                stu_password = #{password}
+            </if>
+        </set>
+        <trim prefix="where">
+            <if test="stuId != null and stuId !=''">
+                stu_id = #{stuId}
+            </if>
+        </trim>
+
+    </update>
+    <insert id="insertStudent" parameterType="Student">
+        insert into t_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null and stuId != ''">
+                stu_id ,
+            </if>
+            <if test="stuName != null and stuName != ''">
+                stu_name ,
+            </if>
+            <if test="password != null and password != ''">
+                stu_password ,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null and stuId != ''">
+                #{stuId},
+            </if>
+            <if test="stuName != null and stuName != ''">
+                #{stuName},
+            </if>
+            <if test="password != null and password != ''">
+                #{password}
+            </if>
+        </trim>
+    </insert>
+</mapper>

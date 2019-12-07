@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: campus-server
+  cloud:
+    config:
+      uri: http://127.0.0.1:8100
+      profile: dev
+      label: master

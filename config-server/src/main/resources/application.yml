@@ -1,0 +1,20 @@
+server:
+  port: 8100
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/zhangxin1219/spring-cloud-config
+          search-paths: smart-njupt
+          username:
+          password:
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8801/eureka/

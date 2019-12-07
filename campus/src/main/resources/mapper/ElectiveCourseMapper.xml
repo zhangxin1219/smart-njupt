@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.njupt.campus.dao.ElectiveCourseDao">
+    <resultMap id="electiveCourseResultMap" type="ElectiveCourse">
+        <id property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="credit" column="credit"/>
+        <result property="studentTotal" column="student_total"/>
+        <result property="studentNum" column="student_num"/>
+        <result property="note" column="note"/>
+    </resultMap>
+    <select id="getElectiveCourseByCourseId" parameterType="String" resultMap="electiveCourseResultMap">
+        select *
+        from t_elective_course
+        where course_id = #{courseId}
+    </select>
+    <select id="listElectiveCourses" resultMap="electiveCourseResultMap">
+        select *
+        from t_elective_course
+    </select>
+    <insert id="insertElectiveCourse" parameterType="ElectiveCourse">
+        insert into t_elective_course (course_id, course_name, teacher_id, credit, note)
+        values (#{courseId}, #{courseName}, #{teacherId}, #{credit}, #{note});
+    </insert>
+    <update id="increaseStudentNumByCourseId" parameterType="String">
+        update t_elective_course
+        set student_num = student_num + 1
+        where course_id = #{courseId}
+    </update>
+</mapper>

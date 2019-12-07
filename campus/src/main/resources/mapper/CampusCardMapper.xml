@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.njupt.campus.dao.CampusCardDao">
+    <resultMap id="campusCardResultMap" type="CampusCard">
+        <id property="cardId" column="card_id"/>
+        <result property="stuId" column="stu_id"/>
+        <result property="realName" column="real_name"/>
+        <result property="mobilePhone" column="mobile_phone"/>
+        <result property="balance" column="balance"/>
+        <result property="type" column="type" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+    </resultMap>
+    <insert id="insertCampusCard" parameterType="CampusCard">
+        insert into t_campus_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            card_id, stu_id, real_name,
+            <if test="mobilePhone != null and mobilePhone != ''">
+                mobile_phone,
+            </if>
+            <if test="balance != null">
+                balance,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{cardId}, #{stuId}, #{realName},
+            <if test="mobilePhone != null and mobilePhone != ''">
+                #{mobilePhone},
+            </if>
+            <if test="balance != null">
+                #{balance},
+            </if>
+            <if test="type != null">
+                #{type,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteCampusCard" parameterType="Long">
+        delete
+        from t_campus_card
+        where card_id = #{cardId}
+    </delete>
+    <update id="updateCampusCard" parameterType="CampusCard">
+        update t_campus_card
+        set mobile_phone = #{mobilePhone}
+        where card_id = #{cardId};
+    </update>
+    <select id="getCampusCardByCardId" parameterType="Long" resultMap="campusCardResultMap">
+        select *
+        from t_campus_card
+        where card_id = #{cardId}
+    </select>
+    <select id="getCampusCardByStuId" parameterType="Integer" resultMap="campusCardResultMap">
+        select *
+        from t_campus_card
+        where stu_id = #{stuId}
+    </select>
+    <select id="listCampusCards" resultMap="campusCardResultMap">
+        select *
+        from t_campus_card
+    </select>
+</mapper>

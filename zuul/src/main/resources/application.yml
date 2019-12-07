@@ -1,0 +1,41 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: zuul-server
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 200
+        max-wait: -1
+        max-idle: 10
+    timeout: 1000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8801/eureka/
+
+logging:
+  config: classpath:log4j2.xml
+
+zuul:
+  routes:
+    campus-server:
+      path: /eas/**
+      stripPrefix: false
+    captcha-server:
+      path: /captcha/**
+      stripPrefix: false
+    account-server:
+      path: /account/**
+      stripPrefix: false
+
+ribbon:
+  ReadTimeout: 120000  #请求处理的超时时间
+  ConnectTimeout: 30000  #请求连接的超时时间
+
